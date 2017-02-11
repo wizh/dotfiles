@@ -1,7 +1,7 @@
-" Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
+" Directory for plugins 
 call plug#begin('~/.local/share/nvim/plugged')
 
-" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+" Plugins 
 Plug 'junegunn/vim-easy-align'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -26,9 +26,8 @@ set relativenumber
 
 " Highlight column 81
 match Error /\%81v.\+/
-"set colorcolumn=81
 
-" Set Airline theme
+" Set theme
 let g:airline_theme="papercolor"
 let g:airline_powerline_fonts = 1
 
