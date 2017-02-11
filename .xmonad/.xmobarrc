@@ -1,0 +1,29 @@
+Config { font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
+       , bgColor = "black"
+       , fgColor = "grey"
+       , position = TopW L 100 
+       , lowerOnStart = True
+       , commands = [ Run Cpu ["-t", "Cpu: <fc=#4DBCE9><total>%</fc>"] 10
+                    , Run Memory ["-t","Mem: <fc=#4DBCE9><usedratio>%</fc>"] 10
+                    , Run Date "%a %b %_d %k:%M" "date" 10
+                    , Run Wireless "wlan0" ["-t", "<fc=#4DBCE9><essid></fc> - <fc=#4DBCE9>[<qualitybar>]</fc>"] 10
+                    , Run Com "/home/mathias/.bin/volume.sh" [] "volume" 10
+                    , Run Com "/home/mathias/.bin/spotify_artist.sh" [] "spotify_artist" 10
+                    , Run Com "/home/mathias/.bin/spotify_song.sh" [] "spotify_song" 10
+                    , Run BatteryP ["BAT0"]
+                                   ["-t", "Battery <acstatus>",
+                                    "-L", "10", "-H", "80", "-p", "3",
+                                    "--",
+                                    "-O", "<fc=#4DBCE9><left>%·</fc>",
+                                    "-i", "<fc=#4DBCE9><left>%·</fc>",
+                                    "-o", "<fc=#4DBCE9><left>%</fc>",
+                                    "-l", "white", "-m", "white", "-h", "white",
+                                    "-f", "/sys/class/power_supply/ADP1/online"
+                                   ]
+                                   10
+                    , Run StdinReader
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = " %StdinReader%}{%wlan0wi%    <fc=#4DBCE9>%spotify_artist%</fc> - <fc=#4DBCE9>%spotify_song%</fc>    %battery%    Volume <fc=#4DBCE9>%volume%</fc>    <fc=#4DBCE9>%date%</fc> "
+       }
