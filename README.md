@@ -1,5 +1,5 @@
 # dotfiles
-simply a collection of my current dotfiles
+Home of my dotfiles.
 
 ## screenshot
 ![scrot](docs/scrot.png)
