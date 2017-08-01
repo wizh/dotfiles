@@ -20,6 +20,9 @@ XF86AudioPlay
 XF86AudioNext
     /home/wizh/.bin/sp.sh next
 
+super + Escape
+    /home/wizh/.bin/lock.sh
+
 #
 # wm independent hotkeys
 #
@@ -37,11 +40,10 @@ super + n
 	rofi -show window
 
 # make sxhkd reload its configuration files:
-super + Escape
+crtl + Escape
 	pkill -USR1 -x sxhkd
 
 #
-# bspwm hotkeys
 #
 
 # quit bspwm normally
