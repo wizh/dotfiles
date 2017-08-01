@@ -2,4 +2,4 @@
 Home of my dotfiles.
 
 ## screenshot
-![scrot](docs/scrot.png)
+![scrot](meteor-2071/docs/scrot.png)
