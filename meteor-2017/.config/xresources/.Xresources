@@ -1,5 +1,3 @@
-!#include </home/wizh/.termcolors/synthwave>
-
 Xft.dpi:                        109
 URxvt*termName:                 xterm-256color
 URxvt*font:                     xft:iosevka:pixelsize=18:style=medium:antialias=true
