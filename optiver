@@ -1,0 +1,154 @@
+.tmux.conf:
+
+set -g default-terminal 'xterm-256color'
+
+set -g mouse on
+
+set-option -g history-limit 10000
+
+bind-key "|" split-window -h -c "#{pane_current_path}"
+bind-key '\' split-window -h -c "#{pane_current_path}"
+
+bind-key "-" split-window -v -c "#{pane_current_path}"
+bind-key "_" split-window -fv -c "#{pane_current_path}"
+
+bind Space last-window
+
+bind -r C-j resize-pane -D 10
+bind -r C-k resize-pane -U 10
+bind -r C-h resize-pane -L 10
+bind -r C-l resize-pane -R 10
+
+set -g terminal-overrides 'xterm*:smcup@:rmcup@'
+
+bind r source-file ~/.tmux.conf \; display "Reloaded!"
+
+bind c new-window -c "#{pane_current_path}" -n 'default'
+
+bind -r "<" swap-window -d -t -1
+bind -r ">" swap-window -d -t +1
+
+bind-key , command-prompt "rename-window '%%'"
+
+unbind -T copy-mode MouseDragEnd1Pane
+
+bind -n C-k clear-history
+bind-key -T copy-mode C-S-Home send -X history-top # Ctrl+Shift+Home
+unbind-key -T copy-mode-vi MouseDragEnd1Pane
+# 2.4+
+unbind -T copy-mode MouseDragEnd1Pane
+
+set -g mouse on
+
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'seebi/tmux-colors-solarized'
+set -g @plugin 'dracula/tmux'
+set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @yank_selection_mouse 'clipboard'
+set -g @yank_with_mouse off
+
+
+set -g @dracula-cpu-usage-colors "light_purple white"
+set -g @dracula-ram-usage-colors "light_purple white"
+set -g @dracula-git-colors "green light_purple"
+set -g @dracula-refresh-rate 1
+set -g @plugin 'tassaron/tmux-df'
+
+set -g @dracula-plugins "git cpu-usage ram-usage"
+set -g @dracula-show-empty-plugins false
+set -g @dracula-show-flags true
+set -g @dracula-border-contrast true
+set -g @dracula-show-powerline false
+set -g @dracula-git-no-untracked-files true
+
+# Needs to be at the end of this config
+run -b '~/.tmux/plugins/tpm/tpm'
+
+
+# Emulate scrolling by sending up and down keys if these commands are running in the pane
+tmux_commands_with_legacy_scroll="nano less more man git"
+
+bind-key -T root WheelUpPane \
+        if-shell -Ft= '#{?mouse_any_flag,1,#{pane_in_mode}}' \
+                'send -Mt=' \
+                'if-shell -t= "#{?alternate_on,true,false} || echo \"#{tmux_commands_with_legacy_scroll}\" | grep -q \"#{pane_current_command}\"" \
+                        "send -t= Up; send -t=Up; send -t=Up" "copy-mode -et="'
+
+bind-key -T root WheelDownPane \
+        if-shell -Ft = '#{?pane_in_mode,1,#{mouse_any_flag}}' \
+                'send -Mt=' \
+                'if-shell -t= "#{?alternate_on,true,false} || echo \"#{tmux_commands_with_legacy_scroll}\" | grep -q \"#{pane_current_command}\"" \
+                        "send -t= Down; send -t=Down; send -t=Down" "send -Mt="'
+
+
+
+.bashrc:
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# Ctrl+R stuff
+FZF_CTRL_R_EDIT_KEY=ctrl-e
+FZF_CTRL_R_EXEC_KEY=enter
+source ~/.fzf-plugins/history-exec.bash
+
+# ----------------------
+# Git Aliases
+# ----------------------
+alias ga='git add'
+alias gaa='git add -u'
+alias gb='git branch'
+alias gbd='git branch --delete '
+alias gc='git commit'
+alias gd='git diff'
+alias gdh='git diff HEAD^ '
+alias gdc='git diff --cached'
+alias gcp='git cherry-pick'
+alias gcm='git commit --message'
+alias gcd='git commit --message "."'
+alias gco='git checkout'
+alias gcob='git checkout -b'
+alias gd='git diff'
+alias gdh='git diff HEAD'
+alias gl='git log'
+alias gm='git merge'
+alias gp='git push'
+alias gpl='git pull'
+alias gs='git status'
+alias gss='git status --short'
+alias gst='git stash'
+alias gsta='git stash apply'
+alias gstd='git stash drop'
+alias gstl='git stash list'
+alias gstp='git stash pop'
+alias gsts='git stash save'
+
+# autocomplete
+bind 'set show-all-if-ambiguous on'
+bind 'TAB:menu-complete'
+
+# Use bash-completion, if available
+[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
+    . /usr/share/bash-completion/bash_completion
+
+# display control characters
+export LESS="-R"
+
+# Eternal bash history.
+# ---------------------
+# Undocumented feature which sets the size to "unlimited".
+# http://stackoverflow.com/questions/9457233/unlimited-bash-history
+export HISTFILESIZE=
+export HISTSIZE=
+export HISTTIMEFORMAT="[%F %T] "
+# Change the file location because certain bash sessions truncate .bash_history file upon close.
+# http://superuser.com/questions/575479/bash-history-truncated-to-500-lines-on-each-login
+export HISTFILE=~/.bash_eternal_history
+# Force prompt to write history after every command.
+# http://superuser.com/questions/20900/bash-history-loss
+PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+
+source /home/developer/tools/fzf/0.24.2/shell/completion.bash
+source /home/developer/tools/fzf/0.24.2/shell/key-bindings.bash
+
+export PATH=$PATH:~/bin
+export XCURSOR_SIZE=16
